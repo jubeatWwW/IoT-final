@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>CoAP</title>
+    </head>
+    <body>
+        <h2>status</h2>
+        <h2 id="status"></h2>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <script>
+        const getStatus = async () => {
+            while(true){
+                await new Promise((resolve, reject)=> {
+                    $.ajax({
+                        url: 'http://jubeatwww.com.tw:5001',
+                        type: 'get',
+                        success: (data) => {
+                            setTimeout(()=>{
+                                console.log('ajax success', data.status);
+                                $('#status').text(data.status);
+                                resolve();
+                            }, 3000);
+                        },
+                        error: (XMLHttpRequest, textStatus, errorThrown) => {
+                            setTimeout(()=>{
+                                $('#status').text('Server Unavaliable');
+                                console.log('ajax error', errorThrown);
+                                resolve();
+                            }, 3000);
+                        }
+                    });
+                });
+            }
+        }
+
+        getStatus();
+
+    </script>
+</html>
